@@ -6,11 +6,17 @@
 [[ $- != *i* ]] && return
 
 alias ls='ls --color=auto'
-PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+alias pacman='sudo pacman'
+alias systemctl='sudo systemctl'
+alias ssh-gpg-agent='echo export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)'
+alias ssh-1p-agent='echo export SSH_AUTH_SOCK=~/.1password/agent.sock'
+alias gpg-update='echo UPDATESTARTUPTTY | gpg-connect-agent'
+alias virsh='sudo virsh'
 
-unset SSH_AGENT_PID
-if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
-fi
+source /usr/share/git/completion/git-prompt.sh
 
-[ -f ${HOME}/.pepastuff ] && . ${HOME}/.pepastuff
+ESC=$(printf "\e")
+GREEN="${ESC}[01;32m"
+BLUE="${ESC}[01;34m"
+RESET="${ESC}[00m"
+PS1='\[${GREEN}\]\u@\H\[${RESET}\]:\[${BLUE}\]\w\[${RESET}\]$(__git_ps1)\$ '
